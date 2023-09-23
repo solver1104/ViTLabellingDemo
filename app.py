@@ -5,8 +5,17 @@ import open_clip
 from PIL import Image
 
 CLIP_MODEL =   ['ViT-B-32', 'laion2b_e16']
-model, _, preprocess = open_clip.create_model_and_transforms(CLIP_MODEL[0], pretrained=CLIP_MODEL[1])
-tokenizer = open_clip.get_tokenizer(CLIP_MODEL[0])
+
+@st.cache_resource
+def load_model_components(CLIP_MODEL):
+    return open_clip.create_model_and_transforms(CLIP_MODEL[0], pretrained=CLIP_MODEL[1])
+
+@st.cache_resource
+def load_tokenizer_components(CLIP_MODEL):
+    return open_clip.get_tokenizer(CLIP_MODEL[0])
+
+model, _, preprocess = load_model_components(CLIP_MODEL)
+tokenizer = load_tokenizer_components(CLIP_MODEL)
 
 PROMPT = "a photo of a "
 
